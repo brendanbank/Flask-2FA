@@ -1,7 +1,7 @@
 from flask_user import UserMixin
-from flask_2fa import F2faMixin
+from flask_2fa import F2faMixin, F2faCredentialMixin
 from . import db
-
+import time
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
@@ -41,8 +41,8 @@ class Role(db.Model):
 
 
 # Define the UserRoles association model
-class UsersRoles(db.Model):
-    __tablename__ = 'users_roles'
+class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
@@ -54,8 +54,10 @@ class Credential(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
-class Challenge(db.Model):
+class Challenge(db.Model,F2faCredentialMixin):
     id = db.Column(db.Integer, primary_key=True)
     request = db.Column(db.String(255), unique=True)
-    timestamp_ms = db.Column(db.Integer)
+    timestamp_ms = db.Column(db.BigInteger)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+        

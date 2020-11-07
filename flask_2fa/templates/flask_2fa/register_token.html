@@ -1,0 +1,7 @@
+{% extends 'flask_2fa/_common_base.html' %} {% block content %} 
+
+{%trans%}Register Token{%endtrans%}
+
+<p><a href={{ url_for('flask_2fa.submit_token') }}>{%trans%}Submit Token{%endtrans%}</a></p>
+
+{% endblock %}

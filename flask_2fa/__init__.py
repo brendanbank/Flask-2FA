@@ -16,7 +16,7 @@ class ConfigError(Exception):
 from flask_login import current_user    # pass through Flask-Login's current_user
 
 
-from .f2fa_mixin import F2faMixin
+from .f2fa_mixin import F2faMixin, F2faCredentialMixin
 from .f2fa_manager import F2faManager
 
 

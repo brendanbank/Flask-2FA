@@ -1,0 +1,41 @@
+{% extends 'flask_2fa/_common_base.html' %} {% block content %} 
+
+{%trans%}Submit Token{%endtrans%}
+
+
+  <h2>Register a credential</h2>
+  <p>Touch your authenticator device now...</p>
+  <a href="/">Cancel</a>
+  
+  <script src="{{ url_for('flask_2fa.static', filename='cbor.js') }}"></script>
+  <script>
+    {# fetch('/api/register/begin', { #}
+    fetch('{{ url_for('flask_2fa.api_register_begin') }}', {
+    
+      method: 'POST',
+    }).then(function(response) {
+      if(response.ok) return response.arrayBuffer();
+      throw new Error('Error getting registration data!');
+    }).then(CBOR.decode).then(function(options) {
+      return navigator.credentials.create(options);
+    }).then(function(attestation) {
+      return fetch('/api/register/complete', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/cbor'},
+        body: CBOR.encode({
+          "attestationObject": new Uint8Array(attestation.response.attestationObject),
+          "clientDataJSON": new Uint8Array(attestation.response.clientDataJSON),
+        })
+      });
+    }).then(function(response) {
+      var stat = response.ok ? 'successful' : 'unsuccessful';
+      alert('Registration ' + stat + ' More details in server log...');
+    }, function(reason) {
+      alert(reason);
+    }).then(function() {
+      window.location = '/';
+    });
+  </script>
+
+
+{% endblock %}

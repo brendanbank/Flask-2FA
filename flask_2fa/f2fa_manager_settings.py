@@ -1,20 +1,3 @@
-import six
-from enum import Enum, unique
-import fido2
-
-class _StringEnum(six.text_type, Enum):
-    @classmethod
-    def _wrap(cls, value):
-        if value is None:
-#             return None
-            return cls('None')
-        return cls(value)
-@unique
-class AuthenitcatorTokenType(_StringEnum):
-    PLATFORM = "platform"
-    CROSS_PLATFORM = "cross-platform"
-    ANY = None
-
 
 
 class F2faManager__Settings(object):
@@ -34,3 +17,16 @@ class F2faManager__Settings(object):
     
     F2FA_USER_VERIVICATION = "discouraged"
     
+    
+    """ Templates URLS """
+    
+    F2FA_REGISTER_TOKEN_URL = '/register-token' #:
+    F2FA_REGISTER_TOKEN_VIEW = '/flask_2fa/register_token.html'
+    
+    F2FA_SUBMIT_TOKEN_URL = '/f2fa/submit-token' #:
+    F2FA_SUBMIT_TOKEN_VIEW = '/flask_2fa/submit_token.html'
+    
+    
+    F2FA_API_REGISTER_BEGIN_URL = '/f2fa/api/register/begin' #:
+    F2FA_API_REGISTER_COMPLETE_URL = '/f2fa/api/register/complete' #:
+
