@@ -3,6 +3,7 @@
 © 2020 Brendan Bank <brendan.bank@gmail.com>
 
 """
+import flask_2fa
 
 from example import create_app
 
