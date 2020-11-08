@@ -1,0 +1,11 @@
+{% extends 'flask_2fa/_common_base.html' %} {% block content %} 
+
+  <h3>{%trans%}Authenticate Token{%endtrans%}</h3>  
+     <a id="authenticate_credentials">Clink here to authenticate with your token...</a>
+  <p >And touch your token device to authenticate ...</p>
+  <a href="/">Cancel</a>
+ 
+  
+{% include 'flask_2fa/_authenticate_script.html' %}
+
+{% endblock %}

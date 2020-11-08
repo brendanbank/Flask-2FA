@@ -1,0 +1,12 @@
+{% extends 'flask_2fa/_common_base.html' %} {% block content %} 
+
+  <h3>{%trans%}Register Token{%endtrans%}</h3>
+
+  <a id="submit_credentials">Clink here to register your token...</a>
+  <p >And touch your token device to register your token...</p>
+  <a href="/">Cancel</a>
+    
+  
+{% include 'flask_2fa/_submit_credentials_script.html' %}
+
+{% endblock %}
