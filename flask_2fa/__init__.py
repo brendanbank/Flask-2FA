@@ -1,5 +1,5 @@
 __title__       = 'Flask-2FA'
-__description__ = 'Customizable 2FA Authentication, based on Flask-User and Flask-Login.'
+__description__ = 'Customizable 2FA Authentication, based on Flask-User and Flask-Login and fido2-python.'
 __version__     = '0.0.1'
 __url__         = 'https://github.com/lingthio/Flask-User'
 __author__      = 'Brendan Bank'
