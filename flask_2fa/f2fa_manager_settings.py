@@ -2,10 +2,12 @@
 
 class F2faManager__Settings(object):
     
-    # set to None to allow any tokens to be used
-    # see https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/Platform_vs_Cross-Platform.html
-    
+    """ set F2FA_AUTHENTICATOR_TOKEN to None to allow any tokens to be used
+        see https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/Platform_vs_Cross-Platform.html
+    """
     F2FA_AUTHENTICATOR_TOKEN = None
+    F2FA_CHALLANGE_TIMEOUT = 10000
+    
     F2FA_PK_CREDIENTIAL_ID = 'localhost'
     F2FA_PK_CREDIENTIAL_NAME = 'Demo Site'
 
@@ -20,13 +22,21 @@ class F2faManager__Settings(object):
     
     """ Templates URLS """
     
-    F2FA_REGISTER_TOKEN_URL = '/register-token' #:
+    F2FA_REGISTER_TOKEN_URL = '/f2fa/register-token' #:
     F2FA_REGISTER_TOKEN_VIEW = '/flask_2fa/register_token.html'
-    
-    F2FA_SUBMIT_TOKEN_URL = '/f2fa/submit-token' #:
-    F2FA_SUBMIT_TOKEN_VIEW = '/flask_2fa/submit_token.html'
-    
+        
     
     F2FA_API_REGISTER_BEGIN_URL = '/f2fa/api/register/begin' #:
     F2FA_API_REGISTER_COMPLETE_URL = '/f2fa/api/register/complete' #:
 
+
+    F2FA_API_AUTHENTICATE_BEGIN_URL = '/f2fa/api/authenticate/begin' #:
+    F2FA_API_AUTHENTICATE_COMPLETE_URL = '/f2fa/api/authenticate/complete' #:
+
+
+    """ redirect after registration of the token
+        '' = do nothing
+        
+    """
+    F2FA_AFTER_REGISTER = ''
+    F2FA_AFTER_AUTHENTICATION = ''

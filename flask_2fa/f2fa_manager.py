@@ -134,27 +134,39 @@ class F2faManager(F2faManager__Settings, F2faManager__Utils, F2faManager__Views)
 
         def register_token_stub():
             return self.register_token_view()
-
-        def submit_token_stub():
-            return self.submit_token_view()
         
         def api_register_begin_sub():
             return self.api_register_begin()
         
         def api_register_complete_sub():
             return self.api_register_complete()
+
+        def api_athenticate_begin_sub():
+            return self.api_authenticate_begin()
         
+        def api_athenticate_complete_sub():
+            return self.api_authenticate_complete()
 
-        app.add_url_rule(self.F2FA_API_REGISTER_COMPLETE_URL, 'flask_2fa.api_register_complete', api_register_complete_sub,
-                         methods=['GET', 'POST'])
 
-        app.add_url_rule(self.F2FA_API_REGISTER_BEGIN_URL, 'flask_2fa.api_register_begin', api_register_begin_sub,
-                         methods=['GET', 'POST'])
+        app.add_url_rule(self.F2FA_API_AUTHENTICATE_COMPLETE_URL, 'flask_2fa.api_authenticate_complete', 
+                         api_athenticate_complete_sub,
+                         methods=['POST'])
 
-        app.add_url_rule(self.F2FA_SUBMIT_TOKEN_URL, 'flask_2fa.submit_token', submit_token_stub,
-                         methods=['GET', 'POST'])
+        app.add_url_rule(self.F2FA_API_AUTHENTICATE_BEGIN_URL, 'flask_2fa.api_authenticate_begin', 
+                         api_athenticate_begin_sub,
+                         methods=['POST'])
 
-        app.add_url_rule(self.F2FA_REGISTER_TOKEN_URL, 'flask_2fa.register_token', register_token_stub,
+        app.add_url_rule(self.F2FA_API_REGISTER_COMPLETE_URL, 'flask_2fa.api_register_complete', 
+                         api_register_complete_sub,
+                         methods=['POST'])
+
+        app.add_url_rule(self.F2FA_API_REGISTER_BEGIN_URL, 'flask_2fa.api_register_begin', 
+                         api_register_begin_sub,
+                         methods=['POST'])
+
+
+        app.add_url_rule(self.F2FA_REGISTER_TOKEN_URL, 'flask_2fa.register_token', 
+                         register_token_stub,
                  methods=['GET', 'POST'])
 
 

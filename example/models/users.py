@@ -1,12 +1,12 @@
 from flask_user import UserMixin
-from flask_2fa import F2faMixin, F2faCredentialMixin
+from flask_2fa import F2faUserMixin, F2faCredentialMixin, F2faChallangeMixin
 from . import db
-import time
+import datetime
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
 
-class User(db.Model, UserMixin, F2faMixin):
+class User(db.Model, UserMixin, F2faUserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
 
@@ -47,14 +47,17 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
 
-class Credential(db.Model):
+class Credential(db.Model, F2faCredentialMixin):
     id = db.Column(db.Integer(), primary_key=True)
     signature_count = db.Column(db.Integer, nullable=True)
+    ip_address = db.Column(db.String(255))
+    user_agent = db.Column(db.String(255))
+    credential_id = db.Column(db.String(255))
     credential = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
-
-class Challenge(db.Model,F2faCredentialMixin):
+class Challenge(db.Model,F2faChallangeMixin):
     id = db.Column(db.Integer, primary_key=True)
     request = db.Column(db.String(255), unique=True)
     timestamp_ms = db.Column(db.BigInteger)
