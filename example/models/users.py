@@ -3,6 +3,8 @@ from flask_2fa import F2faUserMixin, F2faCredentialMixin, F2faChallangeMixin
 from . import db
 import datetime
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, validators
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
 
@@ -54,8 +56,14 @@ class Credential(db.Model, F2faCredentialMixin):
     user_agent = db.Column(db.String(255))
     credential_id = db.Column(db.String(255))
     credential = db.Column(db.String(255))
+    display_name = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+
+class CredentialForm(FlaskForm):
+    display_name = StringField('Display Name', validators=[
+        validators.DataRequired('Display Name is required')])
+    submit = SubmitField('Update')
 
 class Challenge(db.Model,F2faChallangeMixin):
     id = db.Column(db.Integer, primary_key=True)

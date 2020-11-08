@@ -66,25 +66,34 @@ class F2faManager__Views(object):
         credential_id = data["credentialId"]
         client_data = ClientData(data["clientDataJSON"])
         auth_data = AuthenticatorData(data["authenticatorData"])
-        signature = data["signature"]
+        signature = data["signature"]        
 
         server = current_app.f2fa_manager.reply_party_server.server
-        cred = server.authenticate_complete(
-            session.pop("state"),
-            credentials,
-            credential_id,
-            client_data,
-            auth_data,
-            signature,
-        )
+        try:
+            cred = server.authenticate_complete(
+                session.pop("state"),
+                credentials,
+                credential_id,
+                client_data,
+                auth_data,
+                signature,
+            )
+        except Exception as e:
+            log.error(f'Error authenticating {current_user.email}: {e}')
+            abort(404)
         
         credential_id = websafe_encode(cred.credential_id)
-        
         log.info(f'user {current_user.email} logged into with credentials {credential_id}.')
         
-        """ Token authentication succeeded. Set session vars to reflect this """
+        """ Token authentication succeeded. """
+        """ Set session vars to reflect this """
         
         self.f2fa_login(credential_id)
+        
+        """ update signature counter """
+        self.credential_cls.update_signature_count(credential_id,auth_data.counter)
+        self.db.session.commit()
+        
                 
         return cbor.encode({"status": "ok"})
     

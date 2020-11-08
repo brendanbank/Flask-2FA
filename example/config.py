@@ -33,8 +33,8 @@ MAIL_PASSWORD = None
 
 # Flask-User settings
 USER_APP_NAME = 'Flask-User starter app'
-USER_EMAIL_SENDER_NAME = os.getenv('AUTHOR_EMAIL')
-USER_EMAIL_SENDER_EMAIL = os.getenv('AUTHOR')
+USER_EMAIL_SENDER_NAME = os.getenv('AUTHOR')
+USER_EMAIL_SENDER_EMAIL = os.getenv('AUTHOR_EMAIL')
 MAIL_DEFAULT_SENDER = USER_EMAIL_SENDER_EMAIL
 
 # Flask settings

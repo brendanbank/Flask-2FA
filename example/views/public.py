@@ -15,6 +15,7 @@ def home_page():
                 <p><a href={{ url_for('user.register') }}>{%trans%}Register{%endtrans%}</a></p>
                 <p><a href={{ url_for('user.login') }}>{%trans%}Sign in{%endtrans%}</a></p>
                 <p><a href={{ url_for('public.home_page') }}>{%trans%}Home Page{%endtrans%}</a> (accessible to anyone)</p>
+                <p><a href={{ url_for('admin_site.f2fa_credentials') }}>{%trans%}Credentials{%endtrans%}</a></p>
                 <p><a href={{ url_for('user.logout') }}>{%trans%}Sign out{%endtrans%}</a></p>
                 <p><a href={{ url_for('flask_2fa.register_token') }}>{%trans%}Register Token{%endtrans%}</a></p>
                 <p><a href={{ url_for('flask_2fa.authenticate_token') }}>{%trans%}Authenticate Token{%endtrans%}</a></p>

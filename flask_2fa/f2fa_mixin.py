@@ -16,6 +16,7 @@ class F2faUserMixin(object):
                 log.debug(f'user {self.email} has {credential}')
                 return True
         return(False)
+    
     def has_f2fa_credentials(self):
         if self.get_2fa_cred():
             return True
@@ -33,6 +34,12 @@ class F2faChallangeMixin(object):
         return cls.query.filter(cls.request==request).first()
 
 class F2faCredentialMixin(object):
+    @classmethod
+    def update_signature_count(cls,credential_id,counter):
+        credential = cls.query.filter(cls.credential_id==credential_id).first()
+        credential.signature_count = counter;
+        return(credential)
+    
     @classmethod
     def add_credential(cls,credential,credential_id, request):
 
