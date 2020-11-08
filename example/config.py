@@ -33,8 +33,8 @@ MAIL_PASSWORD = None
 
 # Flask-User settings
 USER_APP_NAME = 'Flask-User starter app'
-USER_EMAIL_SENDER_NAME = 'Brendan Bank'
-USER_EMAIL_SENDER_EMAIL = 'brendan.bank@gmail.com'
+USER_EMAIL_SENDER_NAME = os.getenv('AUTHOR_EMAIL')
+USER_EMAIL_SENDER_EMAIL = os.getenv('AUTHOR')
 MAIL_DEFAULT_SENDER = USER_EMAIL_SENDER_EMAIL
 
 # Flask settings
@@ -42,7 +42,7 @@ CSRF_ENABLED = True
 
 # Flask-SQLAlchemy settings
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SECRET_KEY = '.kjasdhfkjashdfkljhsalkdfjhlkasjdhfkjasljw;oiuwe;jhaskj.kmnsavclkuhqegiuy7039874iulyhwdliuysdoy'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Flask-User settings
 USER_APP_NAME = 'Flask-F2fa demo app'
