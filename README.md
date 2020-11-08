@@ -14,4 +14,4 @@ This was really a fun exploration project to see if I could implement hardware t
 * Flask-Login - Copyright (c) 2011 Matthew Frazier
 * Flask-User - Copyright (c) 2013 Ling Thio
 * Flask-2FA - Copyright (c) 2020 Brendan Bank
-* cbor-js - Copyright (c) 2014-2016 Patrick Gansterer <paroga@paroga.com>
+* cbor-js - Copyright (c) 2014 Patrick Gansterer <paroga@paroga.com>
