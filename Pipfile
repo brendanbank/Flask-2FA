@@ -13,6 +13,7 @@ python-dotenv = "*"
 mysql-connector-python = "*"
 pymysql = "*"
 mysqlclient = "*"
+user-agents = "*"
 
 [dev-packages]
 

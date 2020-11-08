@@ -2,10 +2,9 @@ from flask_user import UserManager
 from flask_2fa import F2faManager
 from flask_wtf.csrf import CSRFProtect
 
-
 from flask import Flask
-import flask_2fa
 
+import flask_2fa
 
 def create_app():
     app = Flask(__name__)
