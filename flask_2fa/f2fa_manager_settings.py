@@ -25,7 +25,9 @@ class F2faManager__Settings(object):
     F2FA_REGISTER_TOKEN_URL = '/f2fa/register-token' #:
     F2FA_REGISTER_TOKEN_VIEW = '/flask_2fa/register_token.html'
         
-    
+    F2FA_AUTHENTICATE_TOKEN_URL = '/f2fa/authenticate-token' #:
+    F2FA_AUTHENTICATE_TOKEN_VIEW = '/flask_2fa/authenticate_token.html'
+
     F2FA_API_REGISTER_BEGIN_URL = '/f2fa/api/register/begin' #:
     F2FA_API_REGISTER_COMPLETE_URL = '/f2fa/api/register/complete' #:
 
@@ -33,6 +35,8 @@ class F2faManager__Settings(object):
     F2FA_API_AUTHENTICATE_BEGIN_URL = '/f2fa/api/authenticate/begin' #:
     F2FA_API_AUTHENTICATE_COMPLETE_URL = '/f2fa/api/authenticate/complete' #:
 
+    UF2FA_UNAUTHENTICATED_ENDPOINT = 'flask_2fa.authenticate_token'
+    UF2FA_REGISTRATION_ENDPOINT = 'flask_2fa.register_token'
 
     """ redirect after registration of the token
         '' = do nothing
@@ -40,3 +44,8 @@ class F2faManager__Settings(object):
     """
     F2FA_AFTER_REGISTER = ''
     F2FA_AFTER_AUTHENTICATION = ''
+    
+    """
+    Expiration in seconds
+    """
+    F2FA_CREDITNIAL_EXPIRATION = 3600

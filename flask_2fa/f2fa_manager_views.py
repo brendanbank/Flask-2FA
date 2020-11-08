@@ -1,35 +1,53 @@
 from flask_user import login_required, current_app, current_user
 from flask import render_template
-from flask import session, abort
+from flask import session, abort, url_for, flash, redirect
 from fido2 import cbor 
 from flask import request
 import logging
 log = logging.getLogger(__name__)
-from fido2.utils import websafe_encode, websafe_decode
 
+from fido2.utils import websafe_encode
 from fido2.client import ClientData
-from fido2.ctap2 import AttestationObject, AuthenticatorData, AttestedCredentialData
+from fido2.ctap2 import AttestationObject, AuthenticatorData
 import time
-
-def fido2_credentials(credentials):
-    fido2_creds = []
-    for cred in credentials:
-        fido2_creds.append(AttestedCredentialData(websafe_decode(cred.credential)))
-    return(fido2_creds)
+from urllib.parse import quote, unquote
 
 class F2faManager__Views(object):
     
     @login_required
     def register_token_view(self):
-        # Render form
-        for k,v in session.items():
-            print (f'k = {k} v = {v}')
-            
-        return render_template(self.F2FA_REGISTER_TOKEN_VIEW)
+        # Render             
+        safe_next_url = self._get_safe_next_url('next', self.F2FA_AFTER_REGISTER)
+        return render_template(self.F2FA_REGISTER_TOKEN_VIEW,next=safe_next_url)
+
+    @login_required
+    def unauthenticated_token_view(self):
+        """ Prepare a Flash message and redirect to UF2FA_UNAUTHENTICATED_ENDPOINT"""
+        # Prepare Flash message
+        url = request.url
+        safe_next_url = self.make_safe_url(url)
+        
+        """ check if the user has 2fa credential """
+        if (not current_user.has_f2fa_credentials()):
+            """ redirect to f2fa registration endpoint """
+            flash(f"You have a 2fa token to access '{url}'. Please create one", 'error')
+
+            return redirect(self._endpoint_url(self.UF2FA_REGISTRATION_ENDPOINT)+'?next='+quote(safe_next_url))
+        
+        flash(f"You must be signed in with an 2fa token to access '{url}'.", 'error')
+
+        # Redirect to UF2FA_UNAUTHENTICATED_ENDPOINT
+        return redirect(self._endpoint_url(self.UF2FA_UNAUTHENTICATED_ENDPOINT)+'?next='+quote(safe_next_url))
     
     @login_required
+    def authenticate_token_view(self):
+
+        safe_next_url = self._get_safe_next_url('next', self.F2FA_AFTER_AUTHENTICATION)
+        return render_template(self.F2FA_AUTHENTICATE_TOKEN_VIEW, next=safe_next_url)
+
+    @login_required
     def api_authenticate_begin(self):
-        credentials = fido2_credentials(current_user.get_2fa_cred())
+        credentials = self.fido2_credentials(current_user.get_2fa_cred())
         if not credentials:
             abort(404)
             
@@ -40,7 +58,7 @@ class F2faManager__Views(object):
 
     @login_required
     def api_authenticate_complete(self):
-        credentials = fido2_credentials(current_user.get_2fa_cred())
+        credentials = self.fido2_credentials(current_user.get_2fa_cred())
         if not credentials:
             abort(404)
 
@@ -60,22 +78,25 @@ class F2faManager__Views(object):
             signature,
         )
         
-        log.debug(websafe_encode(cred.credential_id))
+        credential_id = websafe_encode(cred.credential_id)
         
-        session['_f2fa_id'] = websafe_encode(cred.credential_id)
+        log.info(f'user {current_user.email} logged into with credentials {credential_id}.')
         
+        """ Token authentication succeeded. Set session vars to reflect this """
+        
+        self.f2fa_login(credential_id)
+                
         return cbor.encode({"status": "ok"})
     
     @login_required
     def api_register_begin(self):
         
-        server = current_app.f2fa_manager.reply_party_server.server
         if not current_user:
             return abort(404)
-        
-        
-        credentials = fido2_credentials(current_user.get_2fa_cred())
 
+
+        credentials = self.fido2_credentials(current_user.get_2fa_cred())
+        server = current_app.f2fa_manager.reply_party_server.server
         registration_data, state = server.register_begin(
             {
                 "id": bytes(str(current_user.id).encode('utf8')),
@@ -139,4 +160,23 @@ class F2faManager__Views(object):
         self.db.session.commit()
         
         return cbor.encode({"status": "ok"})
+
+    # Returns safe URL from query param ``param_name`` if query param exists.
+    # Returns url_for(default_endpoint) otherwise.
+    
+    def _get_safe_next_url(self, param_name, default_endpoint):
+
+        # Returns safe URL from query param ``param_name`` if query param exists.
+        if param_name in request.args:
+            safe_next_url = current_app.user_manager.make_safe_url(unquote(request.args[param_name]))
+
+        # Returns url_for(default_endpoint) otherwise.
+        else:
+            safe_next_url = self._endpoint_url(default_endpoint)
+
+        return safe_next_url
+
+
+    def _endpoint_url(self, endpoint):
+        return url_for(endpoint) if endpoint else '/'
 

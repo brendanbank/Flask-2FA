@@ -20,4 +20,6 @@ from .f2fa_mixin import F2faUserMixin, F2faCredentialMixin, F2faChallangeMixin
 from .f2fa_manager import F2faManager
 
 
+# Export Flask-2fa decorators
+from .decorators import *
 

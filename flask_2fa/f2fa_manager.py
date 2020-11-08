@@ -3,9 +3,8 @@ from .f2fa_manager_settings import F2faManager__Settings
 from .f2fa_manager_utils import F2faManager__Utils
 from .f2fa_manager_views import F2faManager__Views
 
-
-
 from flask import Flask, Blueprint
+
 
 import six
 from enum import Enum, unique
@@ -134,6 +133,9 @@ class F2faManager(F2faManager__Settings, F2faManager__Utils, F2faManager__Views)
 
         def register_token_stub():
             return self.register_token_view()
+
+        def authenticate_token_stub():
+            return self.authenticate_token_view()
         
         def api_register_begin_sub():
             return self.api_register_begin()
@@ -169,6 +171,10 @@ class F2faManager(F2faManager__Settings, F2faManager__Utils, F2faManager__Views)
                          register_token_stub,
                  methods=['GET', 'POST'])
 
+        app.add_url_rule(self.F2FA_AUTHENTICATE_TOKEN_URL, 'flask_2fa.authenticate_token', 
+                         authenticate_token_stub,
+                 methods=['GET', 'POST'])
+
 
     def _check_settings(self, app):
         """Verify required settings. Produce a helpful error messages for incorrect settings."""
@@ -197,3 +203,5 @@ class F2faManager(F2faManager__Settings, F2faManager__Utils, F2faManager__Views)
                               f'F2FA_USER_VERIVICATION can only contain options: {options}, and None. '
                               'For more information on these settings check out:'
                               'https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/User_Presence_vs_User_Verification.html')
+
+

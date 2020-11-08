@@ -50,12 +50,15 @@ USER_ENABLE_CHANGE_PASSWORD = True  # Allow users to change their password
 USER_ENABLE_CHANGE_USERNAME = False  # Allow users to change their username
 USER_ENABLE_CONFIRM_EMAIL = True  # Force users to confirm their email
 USER_ENABLE_EMAIL = True  # Register with Email
-USER_ENABLE_REGISTRATION = False  # Allow new users to register
+USER_ENABLE_REGISTRATION = True  # Allow new users to register
 USER_REQUIRE_RETYPE_PASSWORD = True  # Prompt for `retype password` in:
 USER_ENABLE_USERNAME = False  # Register and Login with username
 USER_AUTO_LOGIN_AFTER_RESET_PASSWORD = True
 USER_ENABLE_REGISTER = True
 USER_ENABLE_FORGOT_PASSWORD = True
+
+USER_ENABLE_REMEMBER_ME = True
+
 #REMEMBER_COOKIE_NAME='gira_remember_token'
 
 F2FA_AUTHENTICATOR_TOKEN=None

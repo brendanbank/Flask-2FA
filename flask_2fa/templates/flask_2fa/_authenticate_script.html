@@ -1,3 +1,4 @@
+  <script src="{{ url_for('flask_2fa.static', filename='cbor.js') }}"></script>
   <script>
   
   	document.getElementById("authenticate_credentials").onclick = function() {AuthenticateCredentials()};
@@ -32,8 +33,8 @@
 	      	if (options.status != 'ok') alert ('Received error: ' + options.status);
 	    }, function(reason) {
 	      alert(reason);
-	    }){% if f2fa_manager.F2FA_AFTER_AUTHENTICATION %}.then(function() {
-	      window.location = '{{ url_for(f2fa_manager.F2FA_AFTER_AUTHENTICATION) }}';
+	    }){% if next %}.then(function() {
+	      window.location = '{{ next }}';
 	    }){% endif %};
     };
   </script>
