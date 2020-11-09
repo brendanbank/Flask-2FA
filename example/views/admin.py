@@ -20,7 +20,6 @@ def f2fa_credentials():
     for credential in credentials:
         
         ua = user_agents.parse(credential.user_agent)
-        user_string = f'{ua.device.brand}/{ua.device.model}-{ua.os.family} ({ua.os.version_string})'
         user_string = f'{ua.device.brand} {ua.device.model} / {ua.os.family} ({ua.os.version_string}) {ua.browser.family} ({ua.browser.version_string})'
         print (user_string)
         creds.append({'form': CredentialForm(obj=credential),
@@ -28,7 +27,6 @@ def f2fa_credentials():
                       'user_agent': user_string
                       })
         
-    
     return render_template('admin/credentials.html',credentials=creds)
 
 
@@ -49,6 +47,7 @@ def f2fa_credential(id=None,action=None ):
         return redirect(url_for('admin_site.f2fa_credentials'))
         
     form = CredentialForm(obj=credential)
+    
     if form.validate_on_submit():
         form.populate_obj(credential)
         db.session.commit()
